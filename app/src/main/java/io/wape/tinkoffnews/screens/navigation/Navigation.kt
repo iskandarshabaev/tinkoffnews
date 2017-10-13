@@ -7,16 +7,17 @@ import io.wape.tinkoffnews.screens.MainActivity
 import io.wape.tinkoffnews.screens.newsdetails.NewsContentFragment
 import io.wape.tinkoffnews.screens.newslist.NewsListFragment
 
-class Navigation constructor(mainActivity: MainActivity) {
+class Navigation constructor(var mainActivity: MainActivity) {
 
     private val containerId: Int = R.id.container
     private val fragmentManager: FragmentManager = mainActivity.supportFragmentManager
 
     fun navigateToNewsList() {
-        val searchFragment = NewsListFragment()
+        val fragment = NewsListFragment()
         fragmentManager.beginTransaction()
-                .replace(containerId, searchFragment)
+                .replace(containerId, fragment)
                 .commitAllowingStateLoss()
+        showBackButton(false)
     }
 
     fun navigateToNewsContent(news: NewsEntity) {
@@ -26,5 +27,19 @@ class Navigation constructor(mainActivity: MainActivity) {
                 .replace(containerId, fragment, tag)
                 .addToBackStack(null)
                 .commitAllowingStateLoss()
+        showBackButton(true)
+    }
+
+    private fun showBackButton(show: Boolean) {
+        val actionBar = mainActivity.supportActionBar
+        if (actionBar != null) {
+            if (show) {
+                actionBar.setDisplayHomeAsUpEnabled(true)
+                actionBar.setDisplayShowHomeEnabled(true)
+            } else {
+                actionBar.setDisplayHomeAsUpEnabled(false)
+                actionBar.setDisplayShowHomeEnabled(false)
+            }
+        }
     }
 }

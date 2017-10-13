@@ -15,4 +15,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onNavigateUp(): kotlin.Boolean {
+
+        return super.onNavigateUp()
+    }
 }
