@@ -11,11 +11,4 @@ class ApiResponse<T> {
     @SerializedName("payload")
     var payload: T? = null
 
-    constructor(resultCode: String, trackingID: Long, payload: T) {
-        this.resultCode = resultCode
-        this.trackingID = trackingID
-        this.payload = payload
-    }
-
-    constructor() {}
 }
