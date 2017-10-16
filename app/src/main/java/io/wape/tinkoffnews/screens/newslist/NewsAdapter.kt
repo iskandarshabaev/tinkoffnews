@@ -29,7 +29,7 @@ class NewsAdapter(
         private val news: MutableList<NewsEntity>
 ) : RecyclerView.Adapter<NewsViewHolder>(), View.OnClickListener {
 
-    var onNewsClickListener: NewsOnClickListener? = null
+    var listener: ((NewsEntity) -> Unit)? = null
 
     fun changeDataSet(news: List<NewsEntity>?) {
         this.news.clear()
@@ -56,12 +56,6 @@ class NewsAdapter(
     }
 
     override fun onClick(v: View?) {
-        if (onNewsClickListener != null) {
-            onNewsClickListener?.onClick(v!!.tag as NewsEntity)
-        }
-    }
-
-    interface NewsOnClickListener {
-        fun onClick(news: NewsEntity)
+        listener?.invoke(v!!.tag as NewsEntity)
     }
 }

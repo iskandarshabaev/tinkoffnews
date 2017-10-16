@@ -1,4 +1,4 @@
-package io.wape.tinkoffnews
+package io.wape.tinkoffnews.utils
 
 enum class Status {
     SUCCESS,

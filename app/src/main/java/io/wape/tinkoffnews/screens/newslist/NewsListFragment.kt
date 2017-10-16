@@ -12,17 +12,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.wape.tinkoffnews.R
-import io.wape.tinkoffnews.Resource
-import io.wape.tinkoffnews.Status
 import io.wape.tinkoffnews.db.entity.NewsEntity
 import io.wape.tinkoffnews.screens.MainActivity
 import io.wape.tinkoffnews.screens.ViewModelFactoryProvider
 import io.wape.tinkoffnews.screens.handleError
 import io.wape.tinkoffnews.screens.navigation.Navigation
 import io.wape.tinkoffnews.screens.navigation.NavigationProvider
+import io.wape.tinkoffnews.utils.Resource
+import io.wape.tinkoffnews.utils.Status
 import java.util.*
 
-
+/**
+ * Фрагмент для отображения списка новостей
+ */
 class NewsListFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
@@ -51,10 +53,15 @@ class NewsListFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = layoutManager
         swipeToRefresh.setOnRefreshListener { reloadData() }
-        adapter.onNewsClickListener = object : NewsAdapter.NewsOnClickListener {
-            override fun onClick(news: NewsEntity) {
-                navigation.navigateToNewsContent(news)
-            }
+        adapter.listener = { showContent(it) }
+        initToolbar()
+    }
+
+    private fun initToolbar() {
+        val actionBar = (activity as MainActivity).supportActionBar
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(false)
+            actionBar.setDisplayShowHomeEnabled(false)
         }
     }
 
@@ -63,18 +70,38 @@ class NewsListFragment : Fragment() {
         val factory = ViewModelFactoryProvider.provideNews(activity)
         viewModel = ViewModelProviders.of(this, factory).get(NewsListViewModel::class.java)
         subscribeUI(viewModel)
-        viewModel.reload()
+        loadData()
     }
 
+    /**
+     * Попдисывает фрагмент на изменения ViewModel
+     */
     private fun subscribeUI(viewModel: NewsListViewModel) {
         viewModel.news.observe(this, Observer { observe(it) })
     }
 
+    /**
+     * Загрузка данных необходимых для отображения страницы
+     */
+    private fun loadData() {
+        swipeToRefresh.isRefreshing = true
+        snackBar?.dismiss()
+        viewModel.load()
+    }
+
+    /**
+     * Перезагрузка данных.
+     */
     private fun reloadData() {
+        swipeToRefresh.isRefreshing = true
         snackBar?.dismiss()
         viewModel.reload()
     }
 
+    /**
+     * Сюда приходят изменения ViewMddel
+     * @param resource Класс контейнер содержащий данные для отображения страницы
+     */
     private fun observe(resource: Resource<List<NewsEntity>>?) {
         if (resource != null) {
             when (resource.status) {
@@ -85,15 +112,24 @@ class NewsListFragment : Fragment() {
         }
     }
 
+    /**
+     * Запуск фрагмента NewsContentFragment для отображения контента новости
+     */
     private fun showContent(news: NewsEntity) {
         navigation.navigateToNewsContent(news)
     }
 
+    /**
+     * Обновление данных в адаптере
+     */
     private fun updateData(news: List<NewsEntity>?) {
         adapter.changeDataSet(news)
         swipeToRefresh.isRefreshing = false
     }
 
+    /**
+     * Вывод текста ошибка в snackBar c кнопокой перезагрузки
+     */
     private fun showError(resource: Resource<List<NewsEntity>>) {
         swipeToRefresh.isRefreshing = false
         if (resource.throwable != null) {

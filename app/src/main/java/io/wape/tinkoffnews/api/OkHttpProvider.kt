@@ -1,11 +1,12 @@
 package io.wape.tinkoffnews.api
 
+import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
 
-import okhttp3.OkHttpClient
-
-import io.wape.tinkoffnews.api.ApiProtocol.V_1
-
+/**
+ * Провайдер http клиента
+ * Создает инстанс клиента, если он еще не создан
+ */
 class OkHttpProvider {
     companion object {
 
@@ -17,7 +18,7 @@ class OkHttpProvider {
                 synchronized(OkHttpClient::class.java) {
                     client = sClientV2
                     if (client == null) {
-                        sClientV2 = buildClientV2()
+                        sClientV2 = buildClient()
                         client = sClientV2
                     }
                 }
@@ -25,7 +26,7 @@ class OkHttpProvider {
             return client!!
         }
 
-        private fun buildClientV2(): OkHttpClient {
+        private fun buildClient(): OkHttpClient {
             val builder = makeBaseBuilder()
             return builder.build()
         }

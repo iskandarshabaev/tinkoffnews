@@ -2,7 +2,7 @@ package io.wape.tinkoffnews.api.models
 
 import com.google.gson.annotations.SerializedName
 
-class Resp<T> {
+class ApiResponse<T> {
 
     @SerializedName("resultCode")
     var resultCode: String = ""

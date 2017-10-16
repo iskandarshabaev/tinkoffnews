@@ -4,6 +4,10 @@ import io.wape.tinkoffnews.BuildConfig
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * Объект с инстансом интерфейса NewsInterface
+ * Создает инстанс если он еще не создан
+ */
 object API {
 
     private var sNews: NewsInterface? = null

@@ -4,10 +4,16 @@ import android.content.Context
 import io.wape.tinkoffnews.utils.appExecutorsDefault
 import io.wape.tinkoffnews.datasource.DataSourceProvider
 
+/**
+ * Провайдер для получения репозиториев
+ */
 object RepositoryProvider {
 
     @Volatile private var newsRepository: NewsRepository? = null
 
+    /**
+     * Вовзращает репозиторий для работы с новостями
+     */
     fun provideNews(context: Context): NewsRepository {
         var instance = newsRepository
         if (instance == null) {

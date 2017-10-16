@@ -6,25 +6,16 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.view.View
 import android.view.ViewGroup
+import io.wape.tinkoffnews.R
 import java.io.IOException
 import java.net.UnknownHostException
 
-fun Fragment.handleError(throwable: Throwable) {
-    when (throwable) {
-        is IOException -> showErrorMessage("Проблемы с сетью")
-        is UnknownHostException -> showErrorMessage("Проблемы с сетью")
-        else -> {
-            showErrorMessage("Произошла неизвестная ошибка")
-        }
-    }
-}
-
 fun Fragment.handleError(throwable: Throwable, @IdRes resId: Int, listener: View.OnClickListener): Snackbar {
     when (throwable) {
-        is IOException -> return showErrorMessage("Проблемы с сетью", resId, listener)
-        is UnknownHostException -> return showErrorMessage("Проблемы с сетью", resId, listener)
+        is IOException -> return showErrorMessage(R.string.connection_error, resId, listener)
+        is UnknownHostException -> return showErrorMessage(R.string.connection_error, resId, listener)
         else -> {
-            return showErrorMessage("Произошла неизвестная ошибка", resId, listener)
+            return showErrorMessage(R.string.undefined_error, resId, listener)
         }
     }
 }
@@ -37,13 +28,7 @@ inline fun <reified T : View> Activity.findOptional(@IdRes id: Int): T? = findVi
 inline val Activity.contentView: View?
     get() = findOptional<ViewGroup>(android.R.id.content)?.getChildAt(0)
 
-fun Activity.showErrorMessage(message: String) =
-        Snackbar.make(contentView!!, message, Snackbar.LENGTH_LONG).apply { show() }
-
-fun Fragment.showErrorMessage(message: String) =
-        Snackbar.make(view!!, message, Snackbar.LENGTH_LONG).apply { show() }
-
-fun Fragment.showErrorMessage(message: String, @IdRes resId: Int, listener: View.OnClickListener): Snackbar =
+fun Fragment.showErrorMessage(@IdRes message: Int, @IdRes resId: Int, listener: View.OnClickListener): Snackbar =
         Snackbar.make(view!!, message, Snackbar.LENGTH_INDEFINITE).apply {
             setAction(resId, listener)
             show()

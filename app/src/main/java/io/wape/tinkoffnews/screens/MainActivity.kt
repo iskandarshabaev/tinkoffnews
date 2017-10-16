@@ -15,8 +15,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onNavigateUp(): kotlin.Boolean {
-
-        return super.onNavigateUp()
+    override fun onSupportNavigateUp(): Boolean {
+        if (supportFragmentManager.backStackEntryCount > 1) {
+            supportFragmentManager.popBackStack()
+            return false
+        } else {
+            return super.onNavigateUp()
+        }
     }
 }

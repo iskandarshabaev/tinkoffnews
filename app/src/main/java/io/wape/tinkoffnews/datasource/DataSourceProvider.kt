@@ -3,7 +3,10 @@ package io.wape.tinkoffnews.datasource
 import android.content.Context
 import io.wape.tinkoffnews.db.AppDatabase
 
-
+/**
+ * Провайдер доступа к данным
+ * Предоставляет доступ к данным хранящимся локально и на сервере
+ */
 object DataSourceProvider {
 
     @Volatile private var sLocalDataSource: NewsLocalDataSource? = null

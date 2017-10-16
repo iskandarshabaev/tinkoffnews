@@ -13,7 +13,7 @@ interface NewsDao {
     @Query("SELECT * FROM news ORDER BY publicationDate DESC")
     fun loadAllNews(): LiveData<List<NewsEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAll(news: List<NewsEntity>)
 
     @Query("SELECT * FROM news WHERE id = :arg0")

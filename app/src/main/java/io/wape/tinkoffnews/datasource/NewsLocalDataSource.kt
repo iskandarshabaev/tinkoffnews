@@ -2,7 +2,7 @@ package io.wape.tinkoffnews.datasource
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Transformations
-import io.wape.tinkoffnews.Resource
+import io.wape.tinkoffnews.utils.Resource
 import io.wape.tinkoffnews.db.AppDatabase
 import io.wape.tinkoffnews.db.entity.NewsEntity
 

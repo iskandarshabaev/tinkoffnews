@@ -2,4 +2,7 @@
     <string name="app_name">TinkoffNews</string>
 
     <string name="reload">Перезагрузить</string>
+    <string name="undefined_error">Произошла неизвестная ошибка</string>
+    <string name="connection_error">Проблемы с соединением</string>
+
 </resources>
